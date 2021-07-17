@@ -13,12 +13,18 @@
     <link rel="stylesheet" href="./dist/grapesjs-preset-newsletter.css" />
     <link rel="stylesheet" href="./bootstrap/bootstrap.min.css" />
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spinejs/1.2.0/ajax.min.js"></script>
     <script src="//unpkg.com/grapesjs@0.10.7/dist/grapes.min.js"></script>
     <script src="./dist/grapesjs-preset-newsletter.min.js"></script>
     <script src="./js/toastr.min.js"></script>
 
-    <script src="./private/ajaxable.min.js"></script>
+    <!-- <script src="./private/ajaxable.min.js"></script> -->
   </head>
   <style>
     body,
@@ -106,7 +112,7 @@
                           <tr>
                             <td class="card-content">
                               <h1 class="card-title">
-                               The stunning email builder is here
+                                The stunning email builder is here
                                 <br />
                               </h1>
                             </td>
@@ -221,16 +227,13 @@
                       <td class="footer-cell">
                         <div class="c2577">
                           <p class="footer-info">
-                            GrapesJS Newsletter Builder is a free and open
-                            source preset (plugin) used on top of the GrapesJS
-                            core library. For more information about and how to
-                            integrate it inside your applications check
+                          Just mail help you to send quickly and every component is pretty much fully editable
                           </p>
                           <p>
                             <a
                               class="link"
-                              href="https://github.com/artf/grapesjs-preset-newsletter"
-                              >GrapesJS Newsletter Preset</a
+                              href="https://appsierra.com/"
+                              >just mail newlatter preset</a
                             >
                             <br />
                           </p>
@@ -265,7 +268,7 @@
           padding: 5px;
           width: 100%;
           height: 100%;
-          background-color: rgb(234, 236, 237);
+          background-color:#fff;
         }
         .c926 {
           color: rgb(158, 83, 129);
@@ -426,7 +429,7 @@
         }
         .footer {
           margin-top: 50px;
-          color: rgb(152, 156, 165);
+          color: black;
           text-align: center;
           font-size: 11px;
           padding: 5px;
@@ -522,7 +525,7 @@
       method="POST"
       style="display: none"
     >
-      <div class="putsmail-c">
+      <!-- <div class="putsmail-c">
         <a href="https://putsmail.com/" target="_blank">
           <img src="./img/putsmail.png" style="opacity: 0.85" />
         </a>
@@ -539,7 +542,7 @@
             <i class="fa fa-refresh anim-spin" aria-hidden="true"></i>
           </span>
         </div>
-      </div>
+      </div> -->
       <div class="gjs-sm-property">
         <div class="gjs-field">
           <span id="gjs-sm-input-holder">
@@ -628,11 +631,43 @@
         storageManager: {
           autoload: 0,
         },
+
         assetManager: {
-          assets: images,
-          upload: 0,
-          uploadText: "Uploading is not available in this demo",
+          assets: [
+            "http://placehold.it/350x250/78c5d6/fff/image1.jpg",
+            // Pass an object with your properties
+            {
+              type: "image",
+              src: "http://placehold.it/350x250/459ba8/fff/image2.jpg",
+              height: 350,
+              width: 250,
+            },
+            {
+              // As the 'image' is the base type of assets, omitting it will
+              // be set as `image` by default
+              src: "http://placehold.it/350x250/79c267/fff/image3.jpg",
+              height: 350,
+              width: 250,
+            },
+          ],
+          upload: 1,
+          noAssets: "",
+          uploadName: "files",
+          headers: {},
+          params: {},
+          credentials: "include",
+          multiUpload: true,
+          autoAdd: 1,
+          uploadText: "Drop files here or click to upload",
+          addBtnText: "Add image",
+          uploadFile: "",
+          handleAdd: "",
+          dropzone: 1,
+          openAssetsOnDrop: 1,
+          dropzoneContent: "",
+          modalTitle: "Select Image",
         },
+
         container: "#gjs",
         fromElement: true,
         plugins: ["gjs-preset-newsletter"],
@@ -672,7 +707,7 @@
           contentEl.value = cmdGetCode && cmdGetCode.run(editor);
           mdlDialog.className += " " + mdlClass;
           testContainer.style.display = "block";
-          md.setTitle("Test your Newsletter");
+          md.setTitle("Send mail using just mail");
           md.setContent("");
           md.setContent(testContainer);
           md.open();
@@ -763,6 +798,43 @@
           el.attr("title", "");
         });
       });
+      const amConfig = editor.AssetManager.getConfig();
+      editor.runCommand("open-assets");
+      editor.runCommand("open-assets", {
+        target: editor.getSelected(),
+      });
+      const am = editor.AssetManager;
+      am.add([
+        {
+          // You can pass any custom property you want
+          category: "c1",
+          src: "http://placehold.it/350x250/78c5d6/fff/image1.jpg",
+        },
+        {
+          category: "c1",
+          src: "http://placehold.it/350x250/459ba8/fff/image2.jpg",
+        },
+        {
+          category: "c2",
+          src: "http://placehold.it/350x250/79c267/fff/image3.jpg",
+        },
+        // ...
+      ]);
+      am.render();
+
+      am.getAll().length; // <- 3
+      am.getAllVisible().length;
+      const assets = am.getAll();
+
+      am.render(assets.filter((asset) => asset.get("category") == "c1"));
+
+      am.getAll().length; // Still have 3 assets
+      am.getAllVisible().length;
+      am.render([...assets1, ...assets2, ...assets3]);
+      am.getContainer().insertAdjacentHTML(
+        "afterbegin",
+        '<div><button type="button">Click</button></div>'
+      );
     </script>
   </body>
 </html>
